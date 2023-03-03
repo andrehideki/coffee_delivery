@@ -1,22 +1,34 @@
-import React from "react";
-import { CartAnchor, HeaderContainer, LocationAnchor } from "./styles";
+import React, { useContext } from "react";
+import { Cart, HeaderContainer, Location } from "./styles";
 import { MapPin, ShoppingCart } from "phosphor-react";
-import logo from "../../../public/logo.svg";
+import logo from "../../assets/logo.svg";
+import { Link } from "react-router-dom";
+import { CoffeeContext } from "../../contexts/coffee_context";
 
 export function Header() {
+    const {cart} = useContext(CoffeeContext);
+
+    const numberOfCartItems = cart.items.map(item => item.amount).reduce((a, b) => a + b, 0);
+    const isCartEmpty = numberOfCartItems <= 0;
+
     return (
         <HeaderContainer>
-            <a href="/">
+            <Link to={"/"}>
                 <img src={logo}/>
-            </a>
+            </Link>
             <div>
-                <LocationAnchor>
-                    <MapPin size={32} weight="fill" />
-                    <span>Porto Alegre, RS</span>
-                </LocationAnchor>
-                <CartAnchor>
-                    <ShoppingCart size={32} weight="fill" />
-                </CartAnchor>
+                <Location>
+                    <Link to={isCartEmpty? "/" : "/cart"}>
+                        <MapPin size={32} weight="fill" />
+                        <span>Porto Alegre, RS</span>
+                    </Link>
+                </Location>
+                <Cart>
+                    <Link to={isCartEmpty? "/" : "/cart"}>
+                        <span>{numberOfCartItems}</span>
+                        <ShoppingCart size={32} weight="fill" />
+                    </Link>
+                </Cart>
             </div>
         </HeaderContainer>
     );
