@@ -6,10 +6,12 @@ import { Link } from "react-router-dom";
 import { CoffeeContext } from "../../contexts/coffee_context";
 
 export function Header() {
-    const {cart} = useContext(CoffeeContext);
+    const {cart, orderForm} = useContext(CoffeeContext);
 
     const numberOfCartItems = cart.items.map(item => item.amount).reduce((a, b) => a + b, 0);
     const isCartEmpty = numberOfCartItems <= 0;
+    const isUserLocationDefined = !!orderForm.municipio && !!orderForm.uf;
+    const formatedUserLocation = `${orderForm.municipio}, ${orderForm.uf}`;
 
     return (
         <HeaderContainer>
@@ -17,15 +19,17 @@ export function Header() {
                 <img src={logo}/>
             </Link>
             <div>
-                <Location>
-                    <Link to={isCartEmpty? "/" : "/cart"}>
-                        <MapPin size={32} weight="fill" />
-                        <span>Porto Alegre, RS</span>
-                    </Link>
-                </Location>
+                {isUserLocationDefined &&
+                    <Location>
+                        <Link to={isCartEmpty? "/" : "/cart"}>
+                            <MapPin size={32} weight="fill" />
+                            <span>{formatedUserLocation}</span>
+                        </Link>
+                    </Location>
+                }
                 <Cart>
                     <Link to={isCartEmpty? "/" : "/cart"}>
-                        <span>{numberOfCartItems}</span>
+                        {!isCartEmpty && <span>{numberOfCartItems}</span>}
                         <ShoppingCart size={32} weight="fill" />
                     </Link>
                 </Cart>

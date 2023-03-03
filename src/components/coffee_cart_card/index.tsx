@@ -19,11 +19,9 @@ export function CoffeeCartCard({
     price
 }: CoffeeCartCardProps) {
     
-    const { addCoffeToCart, decreaseCoffefromCart } = useContext(CoffeeContext);
+    const { addCoffeToCart, decreaseCoffefromCart, removeCoffefromCart } = useContext(CoffeeContext);
 
     const [counter, setCounter] = useState(amount);
-
-    console.log(amount);
 
     const picuteSrc = `/src/assets/${picture}`;
     const pricelInReal = (price || 0).toLocaleString("pt-BR", {
@@ -43,8 +41,7 @@ export function CoffeeCartCard({
     }
 
     function handleRemoveClicked() {
-        addCoffeToCart(id, counter);
-        setCounter(1);
+        removeCoffefromCart(id);
     }
 
     return (
@@ -54,15 +51,15 @@ export function CoffeeCartCard({
                 <span>{name}</span>
                 <div>
                     <Counter>
-                        <button onClick={handleOnDecreaseAmountClicked}>
+                        <button type="button" onClick={handleOnDecreaseAmountClicked}>
                             <Minus weight="fill" />
                         </button>
                         <span>{counter}</span>
-                        <button onClick={handleOnIncreaseAmountClicked}>
+                        <button type="button" onClick={handleOnIncreaseAmountClicked}>
                             <Plus weight="fill" />
                         </button>
                     </Counter>
-                    <button onClick={handleRemoveClicked}>
+                    <button type="button" onClick={handleRemoveClicked}>
                         <Trash />   
                         REMOVER
                     </button>

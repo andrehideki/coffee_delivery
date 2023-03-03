@@ -4,19 +4,9 @@ import { CoffeeCartCard } from "../../components/coffee_cart_card";
 import { CoffeeContext } from "../../contexts/coffee_context";
 import { CartList, ConfirmButton, Container, OrderForm, PaymentButton } from "./styles";
 
-export function CartPage() {
 
-    const {cart, coffeeList, freight, realizeOrder} = useContext(CoffeeContext);
-    const [form, setForm] = useState({
-        cep: "",
-        logradouro: "",
-        numero: "",
-        complement: "",
-        municipio: "",
-        cidade: "",
-        uf: "",
-        payment: "CREDIT"
-    });
+export function CartPage() {
+    const {cart, coffeeList, freight, orderForm, realizeOrder, setOrderForm } = useContext(CoffeeContext);
 
     const cartItems = cart.items.map(item => {
         const coffee = coffeeList.find(coffee => coffee.id == item.id);
@@ -53,22 +43,57 @@ export function CartPage() {
                             <p>Informe o endereço onde deseja receber seu pedido</p>
                             <div>
                                 <div>
-                                    <input placeholder="CEP" required />
+                                    <input 
+                                        id="cep"  
+                                        name="cep"
+                                        onChange={({target}) => setOrderForm({...orderForm, [target.name]: target.value})}
+                                        placeholder="CEP" 
+                                        required />
                                 </div>
                                 <div>
-                                    <input placeholder="Logradouro" required />
+                                    <input 
+                                        id="logradouro"  
+                                        name="logradouro"
+                                        onChange={({target}) => setOrderForm({...orderForm, [target.name]: target.value})}
+                                        placeholder="Logradouro" 
+                                        required />
                                 </div>
                                 <div>
-                                    <input placeholder="Número" required />
+                                    <input 
+                                        id="numero"  
+                                        name="numero"
+                                        onChange={({target}) => 
+                                        setOrderForm({...orderForm, [target.name]: target.value})}
+                                        placeholder="Número" required />
                                     <div>
-                                        <input placeholder="Complemento" />
+                                        <input 
+                                            id="complemento"  
+                                            name="complemento"
+                                            onChange={({target}) => 
+                                            setOrderForm({...orderForm, [target.name]: target.value})}
+                                            placeholder="Complemento" />
                                         <span>Opcional</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <input placeholder="Municipio" required />
-                                    <input placeholder="Cidade" required />
-                                    <input placeholder="UF" required />
+                                    <input 
+                                        id="municipio"  
+                                        name="municipio"
+                                        onChange={({target}) => 
+                                        setOrderForm({...orderForm, [target.name]: target.value})}
+                                        placeholder="Municipio" required />
+                                    <input 
+                                        id="cidade"  
+                                        name="cidade"
+                                        onChange={({target}) => 
+                                        setOrderForm({...orderForm, [target.name]: target.value})}
+                                        placeholder="Cidade" required />
+                                    <input 
+                                         id="uf"  
+                                         name="uf"
+                                         onChange={({target}) => 
+                                         setOrderForm({...orderForm, [target.name]: target.value})}
+                                        placeholder="UF" required />
                                 </div>
                             </div>
                         </section>
@@ -80,22 +105,22 @@ export function CartPage() {
                             <p>O pagamento é feito na entrega. Escolha a forma que deseja pagar</p>
                             <div>
                                 <PaymentButton 
-                                    className={form.payment == "CREDIT"? "active" : ""}
-                                    onClick={() => setForm({...form, payment: "CREDIT" })}
+                                    className={orderForm.payment == "CREDIT"? "active" : ""}
+                                    onClick={() => setOrderForm({...orderForm, payment: "CREDIT" })}
                                 >
                                     <CreditCard weight="thin" />
                                     <span>CARTÃO DE CRÉDITO</span>
                                 </PaymentButton>
                                 <PaymentButton 
-                                    className={form.payment == "DEBIT"? "active" : ""}
-                                    onClick={() => setForm({...form, payment: "DEBIT" })}
+                                    className={orderForm.payment == "DEBIT"? "active" : ""}
+                                    onClick={() => setOrderForm({...orderForm, payment: "DEBIT" })}
                                 >
                                     <Bank weight="thin" />
                                     <span>CARTÃO DE DÉBITO</span>
                                 </PaymentButton>
                                 <PaymentButton 
-                                    className={form.payment == "MONEY"? "active" : ""}
-                                    onClick={() => setForm({...form, payment: "MONEY" })}
+                                    className={orderForm.payment == "MONEY"? "active" : ""}
+                                    onClick={() => setOrderForm({...orderForm, payment: "MONEY" })}
                                 >
                                     <Money weight="thin" />
                                     <span>DINHEIRO</span>
